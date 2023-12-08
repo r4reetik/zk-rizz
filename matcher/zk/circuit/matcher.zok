@@ -1,4 +1,4 @@
-def main(bool g1,bool g2,u8 a1,u8 a2,bool[20]  arr ,bool[20] arr2) -> bool {
+def main(u8 g1,u8 g2,u8 a1,u8 a2,bool[20]  arr ,bool[20] arr2) -> bool {
     field mut count = 0;
     for u32 i in 0..20 {
         field temp = arr[i] == arr2[i] ? 1 : 0;
