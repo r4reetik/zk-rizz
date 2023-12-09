@@ -4,12 +4,15 @@ import App from "./App.tsx";
 import "./index.css";
 import { ToastContainer } from "react-toastify";
 import { VerifiedProvider } from "./hooks/useVerified.tsx";
+import { TraitsProvider } from "./hooks/useTraits.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <VerifiedProvider>
-            <App />
-            <ToastContainer />
-        </VerifiedProvider>
+        <TraitsProvider>
+            <VerifiedProvider>
+                <App />
+                <ToastContainer />
+            </VerifiedProvider>
+        </TraitsProvider>
     </React.StrictMode>
 );

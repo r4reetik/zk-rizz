@@ -33,6 +33,15 @@ export const TraitSelector = () => {
         } else if (yourTraits.length === 0) {
             return setSelectedTab(0);
         }
+
+        console.log({
+            yourTraits,
+            wantedTraits,
+            yourAge,
+            wantedAge,
+            yourGender,
+            wantedGender,
+        });
     };
 
     const handleTabChange = (tab: number) => {

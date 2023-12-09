@@ -1,12 +1,14 @@
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { useVerified } from "../hooks/useVerified";
 import { useNavigate } from "react-router-dom";
+import { useTraits } from "../hooks/useTraits";
 
 export const AadhaarValidation = () => {
     const [aadhaar, setAadhaar] = useState<File>();
     const [password, setPassword] = useState<string>();
     const navigate = useNavigate();
     const { verify, loading, isVerified, fetched } = useVerified();
+    const { areTraitsSelected, fetched: tsFetched } = useTraits();
 
     const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setAadhaar(e.target.files![0]);
@@ -32,8 +34,10 @@ export const AadhaarValidation = () => {
     useEffect(() => {
         if (fetched && isVerified) {
             navigate("/");
+        } else if (!areTraitsSelected && tsFetched) {
+            navigate("/selectTraits");
         }
-    }, [isVerified, fetched]);
+    }, [isVerified, fetched, areTraitsSelected, tsFetched]);
 
     return (
         <div className="flex flex-col gap-4">

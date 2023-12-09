@@ -6,11 +6,11 @@ const getTraits = async (_req: Request, _res: Response) => {
 	const userAddress = _req.params.address;
 
 	const data = await pg.select('*').from('traits').where('address', userAddress);
-
 	if (!data || data.length < 1) {
 		_res.status(404).json({
 			error: 'invalid user',
 		});
+		return;
 	}
 
 	const traitsList = data[0].traits.split(',');
