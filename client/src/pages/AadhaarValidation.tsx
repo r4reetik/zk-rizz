@@ -40,7 +40,9 @@ export const AadhaarValidation = () => {
 
     return (
         <div className="relative flex items-center justify-evenly gap-[150px] mt-[120px]">
-            <div className="w-[350px] h-[350px] rounded-full bg-white/20"></div>
+            <div className="w-[350px] h-[350px] rounded-full bg-white/20">
+                <img src="logo.png" className="rounded-3xl shadow-xl" />
+            </div>
             <div className="flex flex-col gap-4 bg-white/20 p-6 shadow-xl rounded-2xl">
                 <h1 className="my-3 text-left">
                     We believe 🙈 <br /> It's you
@@ -50,11 +52,11 @@ export const AadhaarValidation = () => {
                     <span className="text-left font-bold">Select Aadhaar</span>
                     <input
                         type="file"
-                        className="block w-full text-lg text-white  rounded-lg cursor-pointer  outline-none dark:bg-white/30  "
+                        className="block w-full text-lg text-white  rounded-xl cursor-pointer  outline-none dark:bg-white/30 "
                         onChange={handleFileChange}
                     />
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 mt-3">
                     <span className="text-left font-bold"> Enter Password</span>
                     <input
                         type="password"
@@ -67,7 +69,7 @@ export const AadhaarValidation = () => {
                 </button>
             </div>
             <div className="absolute right-1 bottom-[-24px] text-sm">
-                powered by Anon Aadhaar 🪪
+                powered by <strong>Anon Aadhaar 🪪</strong>
             </div>
         </div>
     );
