@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { VerifiedNFT } from "../lib/verifiedNFT";
-import { BrowserProvider } from "ethers";
 
 import {
     splitToWords,
@@ -9,6 +8,7 @@ import {
 } from "anon-aadhaar-pcd";
 import { Contract } from "ethers";
 import { nftABI } from "../lib/abi";
+import { useWeb3 } from "./useWeb3";
 
 export const VerifiedProvider = ({
     children,
@@ -18,18 +18,22 @@ export const VerifiedProvider = ({
     const [isVerified, setIsVerified] = useState(false);
     const [loading, setLoading] = useState(false);
     const [fetched, setFetched] = useState(false);
+    const { provider } = useWeb3();
+
     useEffect(() => {
         (async () => {
-            if (window) {
-                const signer = await new BrowserProvider(
-                    (window as any).ethereum
-                ).getSigner();
-                const verifiedNFT = new VerifiedNFT(signer);
+            try {
+                if (!provider) return;
+                const verifiedNFT = new VerifiedNFT(await provider.getSigner());
                 setIsVerified(await verifiedNFT.isVerified());
+                setFetched(true);
+            } catch (error) {
+                console.log(error);
+            } finally {
                 setFetched(true);
             }
         })();
-    }, []);
+    }, [provider]);
 
     const verify = async (file: File, pass: string) => {
         if (!pass) {
@@ -74,20 +78,15 @@ export const VerifiedProvider = ({
                 "http://localhost:5173/circuit_final.zkey"
             );
 
-            const browserProvider = new BrowserProvider(
-                (window as any).ethereum
-            );
-
+            const signer = await provider!.getSigner();
             const contract = new Contract(
                 "0x45C89c5b5ba9805F1D3376C3e5B435A2CFafD42D",
                 // "0x5477b7d16ff0658645ea7fEF75FD79Bc525fA3C5",
                 // "0x15a8eFC8EE20bC2dD1401F29cF778FE2cbBa0F50", //main verifier
                 nftABI,
-                await browserProvider.getSigner()
+                signer
             );
-            const address = await (
-                await browserProvider.getSigner()
-            ).getAddress();
+            const address = await signer.getAddress();
             await contract.safeMint(address, a, b, c, Input);
             setLoading(false);
             return true;

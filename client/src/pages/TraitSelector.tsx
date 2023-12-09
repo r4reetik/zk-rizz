@@ -1,5 +1,8 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { toTitleCase } from "../lib/utils";
+import { useTraits } from "../hooks/useTraits";
+import { useNavigate } from "react-router-dom";
+import { useWeb3 } from "../hooks/useWeb3";
 
 export const TraitSelector = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -9,6 +12,9 @@ export const TraitSelector = () => {
     const [wantedAge, setWantedAge] = useState(21);
     const [yourGender, setYourGender] = useState("Male");
     const [wantedGender, setWantedGender] = useState("Female");
+    const navigate = useNavigate();
+    const { account } = useWeb3();
+    const { loading, selectTraits, areTraitsSelected, fetched } = useTraits();
 
     const categories: Record<string, string[]> = {
         creativity: ["art", "photography", "dance", "music", "puzzles"],
@@ -27,31 +33,40 @@ export const TraitSelector = () => {
 
     const genders = ["Male", "Female", "Other"];
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (!account) return;
         if (wantedTraits.length === 0) {
             return setSelectedTab(1);
         } else if (yourTraits.length === 0) {
             return setSelectedTab(0);
         }
-
-        console.log({
+        await selectTraits(
             yourTraits,
-            wantedTraits,
             yourAge,
+            yourGender === "Male" ? 1 : yourGender === "Female" ? 0 : 2,
+            wantedTraits,
             wantedAge,
-            yourGender,
-            wantedGender,
-        });
+            wantedGender === "Male" ? 1 : wantedGender === "Female" ? 0 : 2,
+            account
+        );
     };
 
     const handleTabChange = (tab: number) => {
         setSelectedTab(tab);
     };
     const handleYourTraitsChange = (trait: string) => {
-        setYourTraits([...yourTraits, trait]);
+        if (yourTraits.includes(trait)) {
+            setYourTraits(yourTraits.filter((t) => t !== trait));
+        } else {
+            setYourTraits([...yourTraits, trait]);
+        }
     };
     const handleWantedTraitsChange = (trait: string) => {
-        setWantedTraits([...wantedTraits, trait]);
+        if (wantedTraits.includes(trait)) {
+            setWantedTraits(wantedTraits.filter((t) => t !== trait));
+        } else {
+            setWantedTraits([...wantedTraits, trait]);
+        }
     };
 
     const handleOnAgeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -65,7 +80,6 @@ export const TraitSelector = () => {
     };
 
     const handleOnGenderChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
-        console.log(e.target.value);
         setYourGender(e.target.value);
     };
 
@@ -75,12 +89,18 @@ export const TraitSelector = () => {
         setWantedGender(e.target.value);
     };
 
+    useEffect(() => {
+        if (areTraitsSelected && fetched) {
+            navigate("/");
+        }
+    }, [areTraitsSelected, fetched]);
+
     const tab = (name: string, index: number) => (
         <span
             className={`${
                 selectedTab === index &&
-                "font-bold text-white bg-blue-500 pl-8 pr-8"
-            } py-3  rounded-3xl cursor-pointer text-2xl 
+                "font-bold text-white bg-primary pl-8 pr-8"
+            } py-3  rounded-3xl cursor-pointer text-lg 
             ${index === 0 ? "pl-8" : "pr-8"}
             `}
             onClick={() => handleTabChange(index)}
@@ -90,10 +110,13 @@ export const TraitSelector = () => {
     );
 
     return (
-        <div className="flex flex-col p-4">
-            <h1 className="mb-8">Trait Selector</h1>
+        <div className="flex flex-col p-4 bg-white/20 rounded-2xl shadow-xl">
+            <h2 className="mb-4 text-2xl">
+                Everyone is <span className="text-3xl font-bold">Unique</span>,
+                select yours below
+            </h2>
             <div className="flex flex-col items-center">
-                <div className="flex gap-5 w-max place-content-center  rounded-3xl bg-gray-500 ">
+                <div className="flex gap-5 w-max place-content-center  rounded-3xl bg-white/30 ">
                     {tab("What you are", 0)}
                     {tab("What you want", 1)}
                 </div>
@@ -105,7 +128,7 @@ export const TraitSelector = () => {
                                     Age:
                                 </span>
                                 <input
-                                    className="rounded-2xl px-3 py-2 w-[100px] h-[36px]"
+                                    className="rounded-2xl px-3 py-2 w-[100px] h-[36px] bg-white/30"
                                     type="number"
                                     value={yourAge}
                                     onChange={handleOnAgeChange}
@@ -117,7 +140,7 @@ export const TraitSelector = () => {
                                 </span>
                                 <select
                                     defaultValue={yourGender}
-                                    className="py-2 px-3 rounded-2xl appearance-none "
+                                    className="py-2 px-3 rounded-2xl outline-none appearance-none bg-white/30 text-white "
                                     onChange={handleOnGenderChange}
                                 >
                                     {genders.map((g) => (
@@ -142,7 +165,7 @@ export const TraitSelector = () => {
                                         <span
                                             key={trait}
                                             className={
-                                                "px-3 py-2 border border-gray-400 rounded-[16px] cursor-pointer " +
+                                                "px-3 py-2 border border-white/30 rounded-[16px] cursor-pointer " +
                                                 (yourTraits.includes(trait) &&
                                                     "bg-gray-200 text-black")
                                             }
@@ -166,7 +189,7 @@ export const TraitSelector = () => {
                                     Age:
                                 </span>
                                 <input
-                                    className="rounded-2xl px-3 py-2 w-[100px] h-[36px]"
+                                    className="rounded-2xl px-3 py-2 w-[100px] bg-white/30 h-[36px]"
                                     type="number"
                                     value={wantedAge}
                                     onChange={handleOnWantedAgeChange}
@@ -178,7 +201,7 @@ export const TraitSelector = () => {
                                 </span>
                                 <select
                                     defaultValue={wantedGender}
-                                    className="py-2 px-3 rounded-2xl appearance-none "
+                                    className="py-2 px-3 rounded-2xl bg-white/30 appearance-none "
                                     onChange={handleOnWantedGenderChange}
                                 >
                                     {genders.map((g) => (
@@ -203,7 +226,7 @@ export const TraitSelector = () => {
                                         <span
                                             key={trait}
                                             className={
-                                                "px-3 py-2 border border-gray-400 rounded-[16px] cursor-pointer " +
+                                                "px-3 py-2 border border-white/30 rounded-[16px] cursor-pointer " +
                                                 (wantedTraits.includes(trait) &&
                                                     "bg-gray-200 text-black")
                                             }
@@ -220,9 +243,11 @@ export const TraitSelector = () => {
                     </span>
                 )}
             </div>
-            <button className="w-max mx-auto" onClick={handleSubmit}>
+            <button className="shadow mx-auto w-[250px]" onClick={handleSubmit}>
                 {wantedTraits.length !== 0 && wantedTraits.length !== 0
                     ? "Submit"
+                    : loading
+                    ? "Loading"
                     : "Next"}
             </button>
         </div>

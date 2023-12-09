@@ -34,25 +34,40 @@ export const AadhaarValidation = () => {
     useEffect(() => {
         if (fetched && isVerified) {
             navigate("/");
-        } else if (!areTraitsSelected && tsFetched) {
-            navigate("/selectTraits");
         }
     }, [isVerified, fetched, areTraitsSelected, tsFetched]);
 
     return (
-        <div className="flex flex-col gap-4">
-            <h1 className="my-3">Aadhaar Validation</h1>
-            <div className="flex flex-col gap-2">
-                <span className="text-left"> Select Aadhaar</span>
-                <input type="file" onChange={handleFileChange} />
+        <div className="relative flex items-center justify-evenly gap-[150px] mt-[120px]">
+            <div className="w-[350px] h-[350px] rounded-full bg-white/20"></div>
+            <div className="flex flex-col gap-4 bg-white/20 p-6 shadow-xl rounded-2xl">
+                <h1 className="my-3 text-left">
+                    We believe 🙈 <br /> It's you
+                </h1>
+                <div className="mb-3 border-t-[1px] border-gray-200" />
+                <div className="flex flex-col gap-2">
+                    <span className="text-left font-bold">Select Aadhaar</span>
+                    <input
+                        type="file"
+                        className="block w-full text-lg text-white  rounded-lg cursor-pointer  outline-none dark:bg-white/30  "
+                        onChange={handleFileChange}
+                    />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <span className="text-left font-bold"> Enter Password</span>
+                    <input
+                        type="password"
+                        className="rounded-2xl font-bold px-3 py-2 bg-white/30 outline-none"
+                        onChange={handlePasswordChange}
+                    />
+                </div>
+                <button disabled={loading} onClick={handleSubmit}>
+                    {loading ? "Loading" : "Submit"}
+                </button>
             </div>
-            <div className="flex flex-col gap-2">
-                <span className="text-left"> Enter Password</span>
-                <input type="text" onChange={handlePasswordChange} />
+            <div className="absolute right-1 bottom-[-24px] text-sm">
+                powered by Anon Aadhaar 🪪
             </div>
-            <button disabled={loading} onClick={handleSubmit}>
-                {loading ? "Loading" : "Submit"}
-            </button>
         </div>
     );
 };

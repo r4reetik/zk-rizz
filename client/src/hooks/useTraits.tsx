@@ -1,5 +1,5 @@
-import { BrowserProvider } from "ethers";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useWeb3 } from "./useWeb3";
 
 const api = "http://localhost:17080";
 
@@ -8,15 +8,13 @@ export const TraitsProvider = ({ children }: { children: React.ReactNode }) => {
     const [fetched, setFetched] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const { account } = useWeb3();
     useEffect(() => {
         (async () => {
             try {
-                if (!window) return;
+                if (!account) return;
                 setLoading(true);
-                const provider = new BrowserProvider((window as any).ethereum);
-                const signer = await provider.getSigner();
-                const address = await signer.getAddress();
-                const res = await fetch(`${api}/traits/${address}`);
+                const res = await fetch(`${api}/traits/${account}`);
                 const data = await res.json();
                 if (!data.error) {
                     setAreTraitsSelected(true);
@@ -28,12 +26,15 @@ export const TraitsProvider = ({ children }: { children: React.ReactNode }) => {
                 setLoading(false);
             }
         })();
-    }, []);
+    }, [account]);
 
     const selectTraits = async (
-        traits: string[],
-        age: number,
-        gender: number,
+        myTraits: string[],
+        myAge: number,
+        myGender: number,
+        wantedTraits: string[],
+        wantedAge: number,
+        wantedGender: number,
         address: string
     ) => {
         try {
@@ -44,14 +45,21 @@ export const TraitsProvider = ({ children }: { children: React.ReactNode }) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    traits,
-                    age,
-                    gender,
+                    mine: {
+                        traits: myTraits,
+                        age: myAge,
+                        gender: myGender,
+                    },
+                    want: {
+                        traits: wantedTraits,
+                        age: wantedAge,
+                        gender: wantedGender,
+                    },
                     address,
                 }),
             });
             const data = await res.json();
-            console.log(data, "vh bjn");
+            if (data.error) throw new Error(data.error);
         } catch (error) {
             console.log(error);
         } finally {
@@ -79,9 +87,12 @@ export const TraitsContext = createContext<{
     fetched: boolean;
     loading: boolean;
     selectTraits: (
-        traits: string[],
-        age: number,
-        gender: number,
+        myTraits: string[],
+        myAge: number,
+        myGender: number,
+        wantedTraits: string[],
+        wantedAge: number,
+        wantedGender: number,
         address: string
     ) => Promise<void>;
 }>({
@@ -89,9 +100,12 @@ export const TraitsContext = createContext<{
     fetched: false,
     loading: false,
     selectTraits: async (
-        traits: string[],
-        age: number,
-        gender: number,
+        myTraits: string[],
+        myAge: number,
+        myGender: number,
+        wantedTraits: string[],
+        wantedAge: number,
+        wantedGender: number,
         address: string
     ) => {},
 });
