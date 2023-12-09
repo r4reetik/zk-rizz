@@ -22,6 +22,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
             const provider = new providers.Web3Provider(
                 (window as any).ethereum
             );
+            const addr = provider.send("eth_requestAccounts", []);
             setProvider(provider);
             const signer = provider.getSigner();
             const address = await signer.getAddress();

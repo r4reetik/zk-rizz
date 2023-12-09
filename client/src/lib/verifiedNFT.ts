@@ -1,11 +1,11 @@
-import { JsonRpcSigner, Contract, BigNumberish } from "ethers";
+import { providers, Contract, BigNumberish } from "ethers";
 import { nftABI } from "./abi";
 
 export class VerifiedNFT {
-    private address = "0x45C89c5b5ba9805F1D3376C3e5B435A2CFafD42D";
-    private signer: JsonRpcSigner;
+    private address = "0x06ea4274E7AbA9e2702883B51fc39B301F76de0E";
+    private signer: providers.JsonRpcSigner;
     private contract: Contract;
-    constructor(signer: JsonRpcSigner, test = true) {
+    constructor(signer: providers.JsonRpcSigner, test = true) {
         if (!test) {
             throw "set address";
         }
@@ -19,13 +19,18 @@ export class VerifiedNFT {
         );
     }
 
+    async tokenURI() {
+        return this.contract.uris(await this.signer.getAddress());
+    }
+
     safeMint(
         to: string,
+        uri: string,
         a: [BigNumberish, BigNumberish],
         b: [[BigNumberish, BigNumberish], [BigNumberish, BigNumberish]],
         c: [BigNumberish, BigNumberish],
         input: BigNumberish[]
     ) {
-        return this.contract.safeMint(to, a, b, c, input);
+        return this.contract.safeMint(to, uri, a, b, c, input);
     }
 }

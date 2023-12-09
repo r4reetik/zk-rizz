@@ -24,7 +24,7 @@ export const VerifiedProvider = ({
         (async () => {
             try {
                 if (!provider) return;
-                const verifiedNFT = new VerifiedNFT(await provider.getSigner());
+                const verifiedNFT = new VerifiedNFT(provider.getSigner());
                 setIsVerified(await verifiedNFT.isVerified());
                 setFetched(true);
             } catch (error) {
@@ -78,16 +78,23 @@ export const VerifiedProvider = ({
                 "http://localhost:5173/circuit_final.zkey"
             );
 
-            const signer = await provider!.getSigner();
+            const signer = provider!.getSigner();
             const contract = new Contract(
-                "0x45C89c5b5ba9805F1D3376C3e5B435A2CFafD42D",
+                "0x06ea4274E7AbA9e2702883B51fc39B301F76de0E",
                 // "0x5477b7d16ff0658645ea7fEF75FD79Bc525fA3C5",
                 // "0x15a8eFC8EE20bC2dD1401F29cF778FE2cbBa0F50", //main verifier
                 nftABI,
                 signer
             );
             const address = await signer.getAddress();
-            await contract.safeMint(address, a, b, c, Input);
+            await contract.safeMint(
+                address,
+                "https://bafybeih34hn45chkqam7zadyv3sj77a6h55s3cj4nt6ziuwho3tqdqdita.ipfs.nftstorage.link/",
+                a,
+                b,
+                c,
+                Input
+            );
             setLoading(false);
             return true;
         } catch (error) {

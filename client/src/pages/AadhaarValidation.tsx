@@ -32,6 +32,7 @@ export const AadhaarValidation = () => {
     };
 
     useEffect(() => {
+        console.log({ fetched, isVerified, areTraitsSelected, tsFetched });
         if (fetched && isVerified) {
             navigate("/");
         }

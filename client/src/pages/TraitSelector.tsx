@@ -244,10 +244,10 @@ export const TraitSelector = () => {
                 )}
             </div>
             <button className="shadow mx-auto w-[250px]" onClick={handleSubmit}>
-                {wantedTraits.length !== 0 && wantedTraits.length !== 0
+                {loading
+                    ? "Submitting.."
+                    : wantedTraits.length !== 0 && wantedTraits.length !== 0
                     ? "Submit"
-                    : loading
-                    ? "Loading"
                     : "Next"}
             </button>
         </div>

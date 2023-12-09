@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useWeb3 } from "./useWeb3";
-
-const api = "http://localhost:17080";
+import { ServerAPI } from "../API";
 
 export const TraitsProvider = ({ children }: { children: React.ReactNode }) => {
     const [areTraitsSelected, setAreTraitsSelected] = useState(false);
@@ -14,7 +13,7 @@ export const TraitsProvider = ({ children }: { children: React.ReactNode }) => {
             try {
                 if (!account) return;
                 setLoading(true);
-                const res = await fetch(`${api}/traits/${account}`);
+                const res = await fetch(`${ServerAPI}/traits/${account}`);
                 const data = await res.json();
                 if (!data.error) {
                     setAreTraitsSelected(true);
@@ -39,7 +38,7 @@ export const TraitsProvider = ({ children }: { children: React.ReactNode }) => {
     ) => {
         try {
             setLoading(true);
-            const res = await fetch(`${api}/set-traits`, {
+            const res = await fetch(`${ServerAPI}/set-traits`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

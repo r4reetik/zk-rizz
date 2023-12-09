@@ -29,7 +29,6 @@ export const Home = () => {
                         : "Connect"}
                 </button>
             </div>
-            <h1>Home</h1>
             <Chat />
         </div>
     );
