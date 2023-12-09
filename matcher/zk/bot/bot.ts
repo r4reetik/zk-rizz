@@ -1,4 +1,4 @@
-import { ZoKratesProvider, initialize } from "zokrates-js-node";
+import { initialize } from "zokrates-js-node";
 import path from "path";
 import fs from "fs";
 
@@ -16,10 +16,12 @@ async function match() {
         const program: Buffer = fs.readFileSync(
             path.join(__dirname, "..", "circuit", "out")
         );
-        const abi = fs
-            .readFileSync(path.join(__dirname, "..", "circuit", "abi.json"))
-            .toString();
-        const provingkey: Uint8Array = fs.readFileSync(
+        const abi = JSON.parse(
+            fs
+                .readFileSync(path.join(__dirname, "..", "circuit", "abi.json"))
+                .toString()
+        );
+        const provingkey = fs.readFileSync(
             path.join(__dirname, "..", "circuit", "proving.key")
         );
         console.log(program, abi, provingkey);
