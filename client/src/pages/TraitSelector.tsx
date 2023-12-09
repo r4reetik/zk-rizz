@@ -7,13 +7,22 @@ export const TraitSelector = () => {
     const [wantedTraits, setWantedTraits] = useState<string[]>([]);
     const [yourAge, setYourAge] = useState(21);
     const [wantedAge, setWantedAge] = useState(21);
-    const [yourGender, setYourGender] = useState(0);
-    const [wantedGender, setWantedGender] = useState(0);
+    const [yourGender, setYourGender] = useState("Male");
+    const [wantedGender, setWantedGender] = useState("Female");
 
     const categories: Record<string, string[]> = {
-        creativity: ["art", "photography", "dance", "music"],
+        creativity: ["art", "photography", "dance", "music", "puzzles"],
+        interests: ["hackathons", "movies", "blockchain"],
         sports: ["basketball", "football", "cricket", "chess", "carroms"],
-        personality: ["weeb", "gamer", "foodie", "traveler"],
+        personality: [
+            "weeb",
+            "gamer",
+            "foodie",
+            "traveler",
+            "bookworm",
+            "humourous",
+            "lgbtq+",
+        ],
     };
 
     const genders = ["Male", "Female", "Other"];
@@ -47,38 +56,37 @@ export const TraitSelector = () => {
     };
 
     const handleOnGenderChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
-        setYourGender(Number(e.target.value));
+        console.log(e.target.value);
+        setYourGender(e.target.value);
     };
 
     const handleOnWantedGenderChange: ChangeEventHandler<HTMLSelectElement> = (
         e
     ) => {
-        setWantedGender(Number(e.target.value));
+        setWantedGender(e.target.value);
     };
 
+    const tab = (name: string, index: number) => (
+        <span
+            className={`${
+                selectedTab === index &&
+                "font-bold text-white bg-blue-500 pl-8 pr-8"
+            } py-3  rounded-3xl cursor-pointer text-2xl 
+            ${index === 0 ? "pl-8" : "pr-8"}
+            `}
+            onClick={() => handleTabChange(index)}
+        >
+            {name}
+        </span>
+    );
+
     return (
-        <div className="flex flex-col p-6">
+        <div className="flex flex-col p-4">
             <h1 className="mb-8">Trait Selector</h1>
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col items-center">
                 <div className="flex gap-5 w-max place-content-center  rounded-3xl bg-gray-500 ">
-                    <span
-                        className={`${
-                            selectedTab === 0 &&
-                            "font-bold text-white bg-blue-500 pl-8 pr-8"
-                        } py-3  rounded-3xl cursor-pointer text-2xl pl-8`}
-                        onClick={() => handleTabChange(0)}
-                    >
-                        What you are
-                    </span>
-                    <span
-                        className={`${
-                            selectedTab === 1 &&
-                            "font-bold text-white bg-blue-500 pl-8 pr-8"
-                        } py-3  rounded-3xl cursor-pointer text-2xl pr-8`}
-                        onClick={() => handleTabChange(1)}
-                    >
-                        What you want
-                    </span>
+                    {tab("What you are", 0)}
+                    {tab("What you want", 1)}
                 </div>
                 {selectedTab === 0 && (
                     <span className="p-1 flex flex-col items-start mt-4">
@@ -99,11 +107,12 @@ export const TraitSelector = () => {
                                     Gender:{" "}
                                 </span>
                                 <select
+                                    defaultValue={yourGender}
                                     className="py-2 px-3 rounded-2xl appearance-none "
                                     onChange={handleOnGenderChange}
                                 >
                                     {genders.map((g) => (
-                                        <option key={g} value={yourGender}>
+                                        <option key={g} value={g}>
                                             {g}
                                         </option>
                                     ))}
@@ -159,11 +168,12 @@ export const TraitSelector = () => {
                                     Gender:{" "}
                                 </span>
                                 <select
+                                    defaultValue={wantedGender}
                                     className="py-2 px-3 rounded-2xl appearance-none "
                                     onChange={handleOnWantedGenderChange}
                                 >
                                     {genders.map((g) => (
-                                        <option key={g} value={wantedGender}>
+                                        <option key={g} value={g}>
                                             {g}
                                         </option>
                                     ))}
