@@ -21,7 +21,7 @@ export const Home = () => {
     }, [isVerified, fetched, areTraitsSelected, tsFetched, account]);
 
     return (
-        <div className="flex flex-col w-screen overflow-hidden px-20">
+        <div className="flex flex-col w-screen max-w-full overflow-hidden px-20">
             <div className="flex w-full justify-end">
                 <button onClick={connect}>
                     {account
