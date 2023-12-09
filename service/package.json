@@ -1,0 +1,11 @@
+{
+  "name": "service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "ethers": "^6.9.0",
+    "zokrates-js": "^1.1.9"
+  }
+}

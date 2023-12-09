@@ -1,0 +1,10 @@
+def main(private u8 g1,private u8 g2,private u8 a1, private u8 a2, private bool[20] arr1,private bool[20] arr2) -> bool {
+        field mut count = 0;
+        for u32 i in 0..20 {
+            field temp = arr1[i] == arr2[i] ? 1 : 0;
+            count = count + temp;
+        }
+        assert(a1-a2 < 5||a2-a1 < 5);
+        assert(g1==g2);
+        return count >= 16;
+        }

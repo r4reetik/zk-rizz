@@ -1,0 +1,45 @@
+{
+  "inputs": [
+    {
+      "name": "g1",
+      "public": false,
+      "type": "u8"
+    },
+    {
+      "name": "g2",
+      "public": false,
+      "type": "u8"
+    },
+    {
+      "name": "a1",
+      "public": false,
+      "type": "u8"
+    },
+    {
+      "name": "a2",
+      "public": false,
+      "type": "u8"
+    },
+    {
+      "name": "arr1",
+      "public": false,
+      "type": "array",
+      "components": {
+        "size": 20,
+        "type": "bool"
+      }
+    },
+    {
+      "name": "arr2",
+      "public": false,
+      "type": "array",
+      "components": {
+        "size": 20,
+        "type": "bool"
+      }
+    }
+  ],
+  "output": {
+    "type": "bool"
+  }
+}
