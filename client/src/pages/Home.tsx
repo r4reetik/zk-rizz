@@ -12,26 +12,50 @@ export const Home = () => {
     const { account, connect } = useWeb3();
 
     useEffect(() => {
-        if (!account || loading || !vLoading) return;
+        const connected = localStorage.getItem("connected");
+        if (connected) {
+            connect();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!account || loading || vLoading || !fetched || !tsFetched) return;
         if (fetched && !isVerified) {
             return navigate("/auth");
         } else if (!areTraitsSelected && tsFetched) {
             return navigate("/selectTraits");
         }
-    }, [isVerified, fetched, areTraitsSelected, tsFetched, account]);
+    }, [
+        isVerified,
+        fetched,
+        loading,
+        vLoading,
+        areTraitsSelected,
+        tsFetched,
+        account,
+    ]);
 
     return (
         <div className="flex flex-col w-screen max-w-full overflow-hidden py-6 px-20">
             {loading || vLoading ? (
                 <div>Loading...</div>
             ) : !account ? (
-                <div className="flex w-full justify-end">
-                    <button onClick={connect}>
-                        {account
-                            ? account.slice(0, 12) + "..." + account.slice(-6)
-                            : "Connect"}
-                    </button>
-                </div>
+                <>
+                    <div className="flex w-full justify-end">
+                        <button onClick={connect}>Connect</button>
+                    </div>
+                    <div className="flex flex-col items-center justify-center gap-4">
+                        <h1 className="text-4xl font-bold">Welcome to</h1>
+                        <img
+                            src="logo.png"
+                            alt=""
+                            className="w-96 rounded-2xl"
+                        />
+                        <h1 className="text-4xl font-bold">
+                            Your love at first proof
+                        </h1>
+                    </div>
+                </>
             ) : (
                 <Chat />
             )}

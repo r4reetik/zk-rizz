@@ -45,12 +45,14 @@ export const TraitsProvider = ({ children }: { children: React.ReactNode }) => {
                 },
                 body: JSON.stringify({
                     mine: {
-                        traits: myTraits,
+                        traits: myTraits.map((trait) => trait.split(" ")[1]),
                         age: myAge,
                         gender: myGender,
                     },
                     want: {
-                        traits: wantedTraits,
+                        traits: wantedTraits.map(
+                            (trait) => trait.split(" ")[1]
+                        ),
                         age: wantedAge,
                         gender: wantedGender,
                     },

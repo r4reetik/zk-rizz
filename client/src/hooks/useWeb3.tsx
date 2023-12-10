@@ -27,6 +27,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
             const signer = provider.getSigner();
             const address = await signer.getAddress();
             setAccount(address);
+            localStorage.setItem("connected", address);
         }
     };
 
