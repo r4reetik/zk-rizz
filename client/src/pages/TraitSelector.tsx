@@ -61,6 +61,7 @@ export const TraitSelector = () => {
             wantedGender === "Male" ? 1 : wantedGender === "Female" ? 0 : 2,
             account
         );
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         navigate("/");
     };
 
