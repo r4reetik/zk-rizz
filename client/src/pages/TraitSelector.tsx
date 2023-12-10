@@ -61,6 +61,7 @@ export const TraitSelector = () => {
             wantedGender === "Male" ? 1 : wantedGender === "Female" ? 0 : 2,
             account
         );
+        navigate("/");
     };
 
     const handleTabChange = (tab: number) => {

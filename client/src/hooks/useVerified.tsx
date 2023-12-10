@@ -85,15 +85,23 @@ export const VerifiedProvider = ({
                 nftABI,
                 signer
             );
+            const nfts = [
+                "https://gateway.lighthouse.storage/ipfs/Qma3Jjha2FP2f4V8gHSR3yBvAwSD7ZGuqsSrZeAMptoheK",
+                "https://gateway.lighthouse.storage/ipfs/QmdE8tcnyES6SUbWSRyfbSeGXVxPWtxYcyH5hrPZoXnhg9",
+                "https://gateway.lighthouse.storage/ipfs/QmQqZQZEQwTweLe9D8fc33dTJ6SutciUy2PEzNmKEZ91oi",
+                "https://gateway.lighthouse.storage/ipfs/QmSDisK5BEVD2f7QpY1YuFYDu1zjYLH4njUy7iJ6Yepn1Z",
+                "https://gateway.lighthouse.storage/ipfs/QmYqZpjPkmEs4nUf6muQvEjRRAoznKFJr8rZmh2iUfaz5H",
+                "https://gateway.lighthouse.storage/ipfs/QmY34VL5yKrGVmbLDPmh91vHGYdG6bK7wQVZNZkPBFybNH",
+                "https://gateway.lighthouse.storage/ipfs/QmazrQ37BNKU4EjWP4YAB46nHPJsjAcViAbwfJjktFWDTh",
+                "https://gateway.lighthouse.storage/ipfs/QmW5zVkgq8PXKhiWaBuSmnX5q3yyR1gf6jLrdRSoBwkepw",
+                "https://gateway.lighthouse.storage/ipfs/QmdnU876YhpCAhCFrjWcgv1UVZmDErWxyA8QZyKBh7co8p",
+                "https://gateway.lighthouse.storage/ipfs/QmXbKLfokR8DUvfB7CqsHMh96BQZ4KgCqRjBPyEDnicdMt",
+            ];
+
+            const randomNFt = nfts[Math.floor(Math.random() * nfts.length)];
+
             const address = await signer.getAddress();
-            await contract.safeMint(
-                address,
-                "https://bafybeih34hn45chkqam7zadyv3sj77a6h55s3cj4nt6ziuwho3tqdqdita.ipfs.nftstorage.link/",
-                a,
-                b,
-                c,
-                Input
-            );
+            await contract.safeMint(address, randomNFt, a, b, c, Input);
             setLoading(false);
             return true;
         } catch (error) {

@@ -1,15 +1,17 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import { useVerified } from "../hooks/useVerified";
 import { useTraits } from "../hooks/useTraits";
 import { useWeb3 } from "../hooks/useWeb3";
 import { Chat } from "./Chat";
+import { useMatched } from "../hooks/useMatched";
 
 export const Home = () => {
     const navigate = useNavigate();
     const { isVerified, fetched, loading: vLoading } = useVerified();
     const { areTraitsSelected, fetched: tsFetched, loading } = useTraits();
-    const { account, connect } = useWeb3();
+    const { account, connect, provider } = useWeb3();
+    const { fetchMatchedDetails } = useMatched();
 
     useEffect(() => {
         const connected = localStorage.getItem("connected");
@@ -17,6 +19,15 @@ export const Home = () => {
             connect();
         }
     }, []);
+
+    useEffect(() => {
+        if (!provider) return;
+        fetchMatchedDetails(provider);
+        const id = setInterval(() => {
+            fetchMatchedDetails(provider);
+        }, 10000);
+        return () => clearInterval(id);
+    }, [provider]);
 
     useEffect(() => {
         if (!account || loading || vLoading || !fetched || !tsFetched) return;
@@ -42,7 +53,13 @@ export const Home = () => {
             ) : !account ? (
                 <>
                     <div className="flex w-full justify-end">
-                        <button onClick={connect}>Connect</button>
+                        <button
+                            onClick={() => {
+                                connect();
+                            }}
+                        >
+                            Connect
+                        </button>
                     </div>
                     <div className="flex flex-col items-center justify-center gap-4">
                         <h1 className="text-4xl font-bold">Welcome to</h1>
