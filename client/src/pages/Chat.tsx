@@ -38,9 +38,10 @@ export const Chat = () => {
             }
             setHistory(msg.reverse());
         };
+        fetchChat();
         const id = setInterval(() => {
             fetchChat();
-        }, 2000);
+        }, 1000);
         return () => {
             clearInterval(id);
         };
@@ -111,7 +112,7 @@ export const Chat = () => {
                                         type: "Text",
                                     });
                                 }}
-                                className=" absolute right-0 rounded-r-2xl px-2 py-3 bg-primary "
+                                className=" absolute right-0 rounded-r-2xl px-2 py-3 bg-primary cursor-pointer "
                             >
                                 Send
                             </div>
@@ -137,7 +138,7 @@ export const Chat = () => {
                     </div>
                 )}
             </div>
-            <Profile />
+            <Profile setHistory={setHistory} />
         </div>
     );
 };

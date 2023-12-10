@@ -101,7 +101,15 @@ export const VerifiedProvider = ({
             const randomNFt = nfts[Math.floor(Math.random() * nfts.length)];
 
             const address = await signer.getAddress();
-            await contract.safeMint(address, randomNFt, a, b, c, Input);
+            const tx = await contract.safeMint(
+                address,
+                randomNFt,
+                a,
+                b,
+                c,
+                Input
+            );
+            await tx.wait();
             setLoading(false);
             return true;
         } catch (error) {

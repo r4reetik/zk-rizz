@@ -4,7 +4,7 @@ import { VerifiedNFT } from "../lib/verifiedNFT";
 import { useMatched } from "../hooks/useMatched";
 import { ServerAPI } from "../API";
 
-export const Profile = () => {
+export const Profile = ({ setHistory }: { setHistory: (s: any) => void }) => {
     const { account, provider } = useWeb3();
     const [logo, setLogo] = useState<string>();
     const [matchedLogo, setMatchedLogo] = useState<string>();
@@ -25,6 +25,7 @@ export const Profile = () => {
             const data = await res.json();
             if (data.error) throw new Error(data.error);
             setMatched("");
+            setHistory([]);
         } catch (error) {
             console.error(error);
         } finally {

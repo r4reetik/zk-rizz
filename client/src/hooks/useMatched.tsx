@@ -28,7 +28,7 @@ export const useMatched = create<MatchedState>((set) => ({
             const address = await provider.getSigner().getAddress();
             //fetch the logs using topic 0xfc7c24d61288c871fca49757bf077797284e3d40e549a861457977d229b1f49c
             const logs = await provider.getLogs({
-                fromBlock: 0,
+                fromBlock: 4856874,
                 toBlock: "latest",
                 topics: [
                     "0xfc7c24d61288c871fca49757bf077797284e3d40e549a861457977d229b1f49c",
