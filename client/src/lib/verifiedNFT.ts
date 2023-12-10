@@ -19,8 +19,8 @@ export class VerifiedNFT {
         );
     }
 
-    async tokenURI() {
-        return this.contract.uris(await this.signer.getAddress());
+    async tokenURI(address?: string) {
+        return this.contract.uris(address ?? (await this.signer.getAddress()));
     }
 
     safeMint(
