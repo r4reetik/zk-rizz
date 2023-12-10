@@ -5,6 +5,7 @@ export interface MatchedState {
     matched: string;
     loading: boolean;
     fetched: boolean;
+    setMatched: (matched: string) => void;
     fetchMatchedDetails: (address: string) => Promise<void>;
 }
 
@@ -12,6 +13,9 @@ export const useMatched = create<MatchedState>((set) => ({
     matched: "",
     loading: false,
     fetched: false,
+    setMatched: (matched: string) => {
+        set({ matched });
+    },
     fetchMatchedDetails: async (address: string) => {
         try {
             set({ loading: true });

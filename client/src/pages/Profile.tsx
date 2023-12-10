@@ -2,12 +2,33 @@ import { useEffect, useState } from "react";
 import { useWeb3 } from "../hooks/useWeb3";
 import { VerifiedNFT } from "../lib/verifiedNFT";
 import { useMatched } from "../hooks/useMatched";
+import { ServerAPI } from "../API";
 
 export const Profile = () => {
     const { account, provider } = useWeb3();
     const [logo, setLogo] = useState<string>();
     const [matchedLogo, setMatchedLogo] = useState<string>();
-    const { matched } = useMatched();
+    const { matched, setMatched } = useMatched();
+
+    const handleBreakup = async () => {
+        if (!matched || !account) return;
+        try {
+            const res = await fetch(ServerAPI + "/do-breakup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    addresses: [account, matched],
+                }),
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error);
+            setMatched("");
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
         if (!account || !provider) return;
@@ -45,7 +66,10 @@ export const Profile = () => {
                 </div>
             )}
             {matched && (
-                <div className="flex flex-col flex-1 items-center rounded-2xl gap-3 bg-white/30 p-4">
+                <div
+                    onClick={handleBreakup}
+                    className="flex flex-col flex-1 items-center rounded-2xl gap-3 bg-white/30 p-4"
+                >
                     <img
                         src={"break-up.png"}
                         alt=""

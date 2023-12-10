@@ -110,6 +110,14 @@ export const Chat = () => {
                             Don't worry, our zk-matcher will match you with your
                             love at first proof.
                         </span>
+                        <span className="text-lg font-bold">
+                            We will notify you when you get matched via
+                            notifications through{" "}
+                            <span className="text-primary">Push.</span>
+                        </span>
+                        <span className="text-lg font-bold">
+                            Happy Matching
+                        </span>
                     </div>
                 )}
             </div>

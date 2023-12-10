@@ -21,12 +21,11 @@ export const VerifiedProvider = ({
     const { provider } = useWeb3();
 
     useEffect(() => {
+        if (!provider) return;
         (async () => {
             try {
-                if (!provider) return;
                 const verifiedNFT = new VerifiedNFT(provider.getSigner());
                 setIsVerified(await verifiedNFT.isVerified());
-                setFetched(true);
             } catch (error) {
                 console.log(error);
             } finally {

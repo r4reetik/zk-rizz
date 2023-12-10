@@ -7,12 +7,12 @@ import { Chat } from "./Chat";
 
 export const Home = () => {
     const navigate = useNavigate();
-    const { isVerified, fetched } = useVerified();
-    const { areTraitsSelected, fetched: tsFetched } = useTraits();
+    const { isVerified, fetched, loading: vLoading } = useVerified();
+    const { areTraitsSelected, fetched: tsFetched, loading } = useTraits();
     const { account, connect } = useWeb3();
 
     useEffect(() => {
-        if (!account) return;
+        if (!account || loading || !vLoading) return;
         if (fetched && !isVerified) {
             return navigate("/auth");
         } else if (!areTraitsSelected && tsFetched) {
@@ -22,7 +22,9 @@ export const Home = () => {
 
     return (
         <div className="flex flex-col w-screen max-w-full overflow-hidden py-6 px-20">
-            {!account && (
+            {loading || vLoading ? (
+                <div>Loading...</div>
+            ) : !account ? (
                 <div className="flex w-full justify-end">
                     <button onClick={connect}>
                         {account
@@ -30,8 +32,9 @@ export const Home = () => {
                             : "Connect"}
                     </button>
                 </div>
+            ) : (
+                <Chat />
             )}
-            <Chat />
         </div>
     );
 };
