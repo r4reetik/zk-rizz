@@ -21,14 +21,16 @@ export const Home = () => {
     }, [isVerified, fetched, areTraitsSelected, tsFetched, account]);
 
     return (
-        <div className="flex flex-col w-screen max-w-full overflow-hidden px-20">
-            <div className="flex w-full justify-end">
-                <button onClick={connect}>
-                    {account
-                        ? account.slice(0, 12) + "..." + account.slice(-6)
-                        : "Connect"}
-                </button>
-            </div>
+        <div className="flex flex-col w-screen max-w-full overflow-hidden py-6 px-20">
+            {!account && (
+                <div className="flex w-full justify-end">
+                    <button onClick={connect}>
+                        {account
+                            ? account.slice(0, 12) + "..." + account.slice(-6)
+                            : "Connect"}
+                    </button>
+                </div>
+            )}
             <Chat />
         </div>
     );
