@@ -27,6 +27,8 @@ export const Profile = () => {
             setMatched("");
         } catch (error) {
             console.error(error);
+        } finally {
+            localStorage.setItem("brokeup", matched);
         }
     };
 

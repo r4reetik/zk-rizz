@@ -50,6 +50,11 @@ export const useMatched = create<MatchedState>((set) => ({
                     parsedLog.args[0] === address
                         ? parsedLog.args[1]
                         : parsedLog.args[0];
+                const brokeup = localStorage.getItem("brokeup");
+                if (brokeup === matched) {
+                    set({ matched: "", fetched: true });
+                    return;
+                }
                 set({ matched, fetched: true });
             }
         } catch (error) {
