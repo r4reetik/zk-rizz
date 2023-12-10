@@ -28,6 +28,10 @@ app.post('/set-traits', (_req: Request, _res: Response) => {
 	handler.setTraits(_req, _res);
 });
 
+app.post('/do-breakup', (_req: Request, _res: Response) => {
+	handler.doBreakup(_req, _res);
+});
+
 // ----- Fail Safe ----- //
 app.get('*', (_req: Request, _res: Response) => {
 	_res.status(404).json({
