@@ -15,7 +15,7 @@ export const Chat = () => {
     >([]);
     const { provider, account } = useWeb3();
     const { matched } = useMatched();
-
+    console.log(matched);
     useEffect(() => {
         if (!provider) return;
         PushAPI.initialize(provider.getSigner() as any, {
@@ -49,7 +49,7 @@ export const Chat = () => {
     return (
         <div className="flex w-full gap-4">
             <div className="flex flex-col p-6 bg-white/30 w-full items-center rounded-2xl">
-                {history.length > 0 ? (
+                {history.length > 0 || matched ? (
                     <>
                         <div className="w-full h-[500px] flex flex-col overflow-scroll">
                             {history.length > 0 &&
@@ -78,6 +78,22 @@ export const Chat = () => {
                                         );
                                     }
                                 })}
+                            {matched && history.length === 0 && (
+                                <div className="flex flex-col items-center mb-4">
+                                    <span className="text-3xl font-bold mt-4">
+                                        Congratulations! 🎉
+                                    </span>
+                                    <img
+                                        src="https://media.tenor.com/w-jvEMiA3PMAAAAi/sending-love-and-hugs-sending-love.gif"
+                                        alt=""
+                                    />
+                                    <span className="text-lg font-bold text-center mt-4">
+                                        You have been matched with{" "}
+                                        {matched.slice(0, 12)}...{" "}
+                                        {matched.slice(-6)}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                         <div className="flex w-[80%] items-center relative">
                             <input

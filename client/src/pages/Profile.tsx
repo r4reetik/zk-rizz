@@ -68,7 +68,7 @@ export const Profile = () => {
             {matched && (
                 <div
                     onClick={handleBreakup}
-                    className="flex flex-col flex-1 items-center rounded-2xl gap-3 bg-white/30 p-4"
+                    className="flex flex-col cursor-pointer flex-1 items-center rounded-2xl gap-3 bg-white/30 p-4"
                 >
                     <img
                         src={"break-up.png"}

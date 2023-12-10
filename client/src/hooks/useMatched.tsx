@@ -44,7 +44,14 @@ export const useMatched = create<MatchedState>((set) => ({
                 );
             });
 
-            console.log(log, "log");
+            if (log.length > 0) {
+                const parsedLog = contract.interface.parseLog(log[0]);
+                const matched =
+                    parsedLog.args[0] === address
+                        ? parsedLog.args[1]
+                        : parsedLog.args[0];
+                set({ matched, fetched: true });
+            }
         } catch (error) {
             console.log(error);
         } finally {
